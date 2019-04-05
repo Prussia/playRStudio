@@ -12,9 +12,10 @@ $ docker run -d -p 8787:8787 --name rstudio \
                                             -e PASSWORD=<PASSWORD> \
                                             -e USER=<CUSTOM_NAME> \
                                             rocker/rstudio
-
 ```
-
+```
+install.packages('txtplot')
+```
 ## Learning Roadmap
 
 ### [RStudio Essentials](https://www.rstudio.com/resources/webinars/#849ed0fea538d4329)
