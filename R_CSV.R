@@ -6,3 +6,7 @@ setwd("/web/com")
 
 # Get and print current working directory.
 print(getwd())
+
+
+data <- read.csv("input.csv")
+print(data)
