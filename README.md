@@ -16,6 +16,11 @@ $ docker run -d -p 8787:8787 --name rstudio \
 ```
 install.packages('txtplot')
 ```
+
+## R Programming
+
+### https://www.w3cschool.cn/r/
+
 ## Learning Roadmap
 
 ### [RStudio Essentials](https://www.rstudio.com/resources/webinars/#849ed0fea538d4329)
