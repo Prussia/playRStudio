@@ -5,7 +5,7 @@
 ```
 $ mkdir -p ~/container/rstudio && cd ~/container/rstudio
 
-$ docker run -d -p 8787:8787 -v $(pwd):/home/rstudio -e PASSWORD=pazzword rocker/rstudio
+$ docker run -d -p 8787:8787 -v $(pwd):/home/rstudio -e ADD=shiny -e PASSWORD=<PASSWORD> -e USER=<CUSTOM_NAME> rocker/rstudio
 
 ```
 
