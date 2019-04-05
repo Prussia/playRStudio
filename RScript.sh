@@ -1,1 +1,1 @@
-Rscript helloR.R
+sudo Rscript helloR.R
