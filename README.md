@@ -15,4 +15,14 @@ $ docker run -d -p 8787:8787 --name rstudio \
 
 ```
 
-## 
+## Learning Roadmap
+
+We’ve grouped our existing webinars into learning tracks that can help you expand your Data Science skills.
+
+### [RStudio Essentials](https://www.rstudio.com/resources/webinars/#849ed0fea538d4329)
+
+- Programming Part 1 (Writing code in RStudio)
+- Programming Part 2 (Debugging code in RStudio)
+- Programming Part 3 (Package writing in RStudio)
+- Managing Change Part 1 (Projects in RStudio)
+- Managing Change Part 2 (Github and RStudio)
