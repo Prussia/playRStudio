@@ -11,7 +11,8 @@ $ docker run -d -p 8787:8787 --name rstudio \
                                             #-e ADD=shiny \
                                             -e PASSWORD=<PASSWORD> \
                                             -e USER=<CUSTOM_NAME> \
-                                            rocker/rstudio
+                                            saagie/rstudio-java
+                                            #rocker/rstudio
 ```
 ```
 install.packages('txtplot')
