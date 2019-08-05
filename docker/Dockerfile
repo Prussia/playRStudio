@@ -25,7 +25,7 @@ RUN apt-get install -y --no-install-recommends \
     netcdf-bin \
   && . /etc/environment \
   && install2.r --error --repos $MRAN --deps TRUE \
-    rJava tidyr reshape2 dplyr DAAG bit64 zoo sqldf RJDBC \
+    rJava devtools tidyr reshape2 dplyr DAAG bit64 zoo sqldf RJDBC \
   && R CMD javareconf \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
