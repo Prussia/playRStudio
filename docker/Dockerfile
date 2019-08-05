@@ -1,50 +1,51 @@
 FROM rocker/rstudio
 
-## JDK and rJava
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    ed \
-    default-jdk \
-    default-jre \
-    icedtea-netx \
-    libbz2-dev \
-    libcairo2-dev \
-    libgdal-dev \
-    libicu-dev \
-    liblzma-dev \
-    libproj-dev \
-    libgeos-dev \
-    libgsl0-dev \
-    librdf0-dev \
-    librsvg2-dev \
-    libv8-dev \
-    libxcb1-dev \
-    libxdmcp-dev \
-    libxslt1-dev \
-    libxt-dev \
-    mdbtools \
-    netcdf-bin \
-  && . /etc/environment \
+    && apt-get install -y --no-install-recommends curl ca-certificates locales \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen en_US.UTF-8 \
+    && rm -rf /var/lib/apt/lists/*
 
-  ## Install Alpla Dependencies: ggplot2 provided by verse image
-  && install2.r --error --repos $MRAN --deps TRUE \
-    rJava tidyr reshape2 dplyr DAAG bit64 zoo sqldf RJDBC \
+ENV JAVA_VERSION jdk8u222-b10
 
-  ## Reconfigure Java R
-  && R CMD javareconf \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/ \
-  && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-## tidyverse, devtools and related R packages already inherited from rocker/verse
+RUN set -eux; \
+    ARCH="$(dpkg --print-architecture)"; \
+    case "${ARCH}" in \
+       aarch64|arm64) \
+         ESUM='652776586ede124189dc218174b5922cc97feac81021ad81905900b349a352d2'; \
+         BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_aarch64_linux_hotspot_8u222b10.tar.gz'; \
+         ;; \
+       armhf) \
+         ESUM='7b3d6ade8c25adca01095ba66642132d8c87a1a8caf3883850e34778453afcec'; \
+         BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_arm_linux_hotspot_8u222b10.tar.gz'; \
+         ;; \
+       ppc64el|ppc64le) \
+         ESUM='f85de48f1dcfd78a39bf5817d3c2f8247c75df6abd56c8721172bf2bd757eb69'; \
+         BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_ppc64le_linux_hotspot_8u222b10.tar.gz'; \
+         ;; \
+       s390x) \
+         ESUM='d56d6a128f8827e5baeae379bcb1b3ead2cfd5b1abb03befa4588f89f08ea626'; \
+         BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_s390x_linux_hotspot_8u222b10.tar.gz'; \
+         ;; \
+       amd64|x86_64) \
+         ESUM='37356281345b93feb4212e6267109b4409b55b06f107619dde4960e402bafa77'; \
+         BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u222b10.tar.gz'; \
+         ;; \
+       *) \
+         echo "Unsupported arch: ${ARCH}"; \
+         exit 1; \
+         ;; \
+    esac; \
+    curl -LfsSo /tmp/openjdk.tar.gz ${BINARY_URL}; \
+    echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
+    mkdir -p /opt/java/openjdk; \
+    cd /opt/java/openjdk; \
+    tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
+    rm -rf /tmp/openjdk.tar.gz;
 
-## httr authentication uses this port
-EXPOSE 1410
-ENV HTTR_LOCALHOST 0.0.0.0
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:$PATH"
 
-#Export projects Volume
-VOLUME /home/rstudio/projects
-
-RUN  chown -R :rstudio /usr/local/lib/R/site-library && chown -R rstudio:rstudio /home/rstudio && service rstudio-server restart
-
-#RUN R CMD javareconf
-
+RUN R CMD javareconf
