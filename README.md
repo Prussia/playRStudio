@@ -11,7 +11,7 @@ $ docker run -d -p 8787:8787 --name rstudio \
                                             #-e ADD=shiny \
                                             -e PASSWORD=<PASSWORD> \
                                             -e USER=<CUSTOM_NAME> \
-                                            saagie/rstudio-java
+                                            prussia2016/playrstudio
                                             #rocker/rstudio
 ```
 ```
