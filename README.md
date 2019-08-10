@@ -21,6 +21,7 @@ install.packages('txtplot')
 ## R Programming
 
 ### https://www.w3cschool.cn/r/
+### https://www.katacoda.com/basiafusinska/courses/r-basics
 
 ## Learning Roadmap
 
